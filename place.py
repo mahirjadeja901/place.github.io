@@ -1,39 +1,31 @@
 import streamlit as st
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+import time
 
-# Function to generate fireworks
-def create_fireworks(num_fireworks=10, num_frames=100):
-    fig, ax = plt.subplots()
-    ax.set_xlim(0, 10)
-    ax.set_ylim(0, 10)
-    ax.axis('off')  # Hide the axes
+# Set the title of the app
+st.title("🎆 Diwali Celebration with Fireworks 🎆")
 
-    # Initialize scatter points
-    fireworks = [ax.scatter([], [], s=100, c='yellow') for _ in range(num_fireworks)]
+# Add a description
+st.write("Welcome to the Diwali celebration! Let's enjoy the fireworks!")
 
-    def init():
-        for fw in fireworks:
-            fw.set_offsets([])
-        return fireworks
+# Create a button to start the fireworks animation
+if st.button("Light the Fireworks!"):
+    # Show a loading spinner while the fireworks are being displayed
+    with st.spinner("Lighting the fireworks..."):
+        time.sleep(2)  # Simulate a delay for effect
+        st.balloons()  # Display balloons as a representation of fireworks
+        st.success("Happy Diwali! 🎉")  # Show a success message
 
-    def update(frame):
-        for fw in fireworks:
-            x = np.random.rand() * 10
-            y = np.random.rand() * 10
-            fw.set_offsets([x, y])
-            fw.set_sizes(np.random.randint(50, 300, size=1))  # Vary the size of the fireworks
-        return fireworks
+# Add some festive decorations
+st.markdown("""
+    <style>
+    .stApp {
+        background-color: #ffe6e6;  /* A light pink background for a festive feel */
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-    ani = animation.FuncAnimation(fig, update, frames=num_frames, init_func=init, blit=True, interval=100)
-    return ani
+# Add a festive image (replace with a valid image URL)
+st.image("https://your-image-url.com/path_to_your_diwali_image.jpg", caption="Happy Diwali!", use_column_width=True)
 
-# Streamlit UI
-st.title("Diwali Fireworks Animation")
-
-# Create the fireworks animation
-ani = create_fireworks()
-
-# Display the animation in Streamlit
-st.pyplot(ani)
+# Add a closing message
+st.write("Thank you for celebrating Diwali with us!")
