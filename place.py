@@ -30,4 +30,10 @@ def create_fireworks(num_fireworks=10, num_frames=100):
     return ani
 
 # Streamlit UI
-st.
+st.title("Diwali Fireworks Animation")
+
+# Create the fireworks animation
+ani = create_fireworks()
+
+# Display the animation in Streamlit
+st.pyplot(ani)
