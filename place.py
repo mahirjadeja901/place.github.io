@@ -3,14 +3,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
-# Function to generate fireworks
+# Function to create fireworks
 def create_fireworks(num_fireworks=10, num_frames=100):
     fig, ax = plt.subplots()
     ax.set_xlim(0, 10)
     ax.set_ylim(0, 10)
     ax.axis('off')  # Hide the axes
 
-    # Initialize scatter points
+    # Initialize scatter points for fireworks
     fireworks = [ax.scatter([], [], s=100, c='yellow') for _ in range(num_fireworks)]
 
     def init():
@@ -30,7 +30,7 @@ def create_fireworks(num_fireworks=10, num_frames=100):
     return ani
 
 # Streamlit UI
-st.title("Diwali Fireworks Animation")
+st.title("Diwali Celebration Animation")
 
 # Create the fireworks animation
 ani = create_fireworks()
