@@ -10,7 +10,7 @@ def create_3d_text(name, color):
     
     # Create a renderer
     renderer = p3js.WebGLRenderer()
-    renderer.setSize(800, 600)
+    renderer.setSize(800, 800)
 
     # Create text geometry
     text_geometry = p3js.TextGeometry(
