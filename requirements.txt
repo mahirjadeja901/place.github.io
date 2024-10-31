@@ -1,2 +1,4 @@
 streamlit
-pythreejs
+Pillow
+imageio
+numpy
