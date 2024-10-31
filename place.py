@@ -10,7 +10,9 @@ def create_3d_text(name, color):
     
     # Create a renderer
     renderer = p3js.WebGLRenderer()
-    renderer.setSize(800, 800)
+    
+    # Set the size of the renderer
+    renderer.setSize(width=800, height=600)
 
     # Create text geometry
     text_geometry = p3js.TextGeometry(
@@ -32,7 +34,7 @@ def create_3d_text(name, color):
     # Add the mesh to the scene
     scene.add(text_mesh)
 
-    # Set the renderer and scene in the app
+    # Return the renderer and scene
     return renderer, scene, camera
 
 # Streamlit UI
@@ -44,7 +46,7 @@ color = st.color_picker("Choose a color:", "#FF5733")
 if st.button("Generate 3D Name"):
     if name:
         renderer, scene, camera = create_3d_text(name, color)
-
+        
         # Render the scene
         st.write(renderer.to_html())
     else:
