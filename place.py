@@ -1,50 +1,33 @@
 import streamlit as st
-from PIL import Image, ImageDraw
-import imageio
 import numpy as np
-import os
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 
-def create_image(text, width=200, height=100, bgcolor=(255, 255, 255)):
-    """Create an image with the specified text."""
-    img = Image.new('RGB', (width, height), bgcolor)
-    draw = ImageDraw.Draw(img)
-    textwidth, textheight = draw.textsize(text)
-    text_x = (width - textwidth) // 2
-    text_y = (height - textheight) // 2
-    draw.text((text_x, text_y), text, fill=(0, 0, 0))
-    return img
+# Function to generate fireworks
+def create_fireworks(num_fireworks=10, num_frames=100):
+    fig, ax = plt.subplots()
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 10)
+    ax.axis('off')  # Hide the axes
 
-def create_gif(texts):
-    """Create a GIF from a list of texts."""
-    images = []
-    for text in texts:
-        img = create_image(text)
-        images.append(img)
-    
-    # Save images as a GIF
-    gif_path = 'custom_gif.gif'
-    images[0].save(gif_path, save_all=True, append_images=images[1:], duration=500, loop=0)
-    return gif_path
+    # Initialize scatter points
+    fireworks = [ax.scatter([], [], s=100, c='yellow') for _ in range(num_fireworks)]
+
+    def init():
+        for fw in fireworks:
+            fw.set_offsets([])
+        return fireworks
+
+    def update(frame):
+        for fw in fireworks:
+            x = np.random.rand() * 10
+            y = np.random.rand() * 10
+            fw.set_offsets([x, y])
+            fw.set_sizes(np.random.randint(50, 300, size=1))  # Vary the size of the fireworks
+        return fireworks
+
+    ani = animation.FuncAnimation(fig, update, frames=num_frames, init_func=init, blit=True, interval=100)
+    return ani
 
 # Streamlit UI
-st.title("Custom GIF Generator")
-
-text_input = st.text_input("Enter text for the GIF (comma-separated):", "Hello, World, Streamlit")
-
-if st.button("Generate GIF"):
-    if text_input:
-        texts = [text.strip() for text in text_input.split(',')]
-        gif_path = create_gif(texts)
-        
-        # Display the GIF
-        st.image(gif_path, caption="Generated GIF", use_column_width=True)
-        
-        # Optionally, provide a download link
-        with open(gif_path, "rb") as f:
-            st.download_button("Download GIF", f, file_name="custom_gif.gif")
-    else:
-        st.warning("Please enter some text.")
-
-# Clean up generated GIF after download
-if os.path.exists(gif_path):
-    os.remove(gif_path)
+st.
