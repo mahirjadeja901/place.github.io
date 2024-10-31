@@ -1,53 +1,35 @@
 import streamlit as st
 import pythreejs as p3js
 
-def create_3d_text(name, color):
-    # Create a scene
-    scene = p3js.Scene()
-    
-    # Create a camera
-    camera = p3js.PerspectiveCamera(position=[0, 0, 5], aspect=1)
-    
-    # Create a renderer
+def create_renderer():
+    # Create a WebGLRenderer
     renderer = p3js.WebGLRenderer()
-    
-    # Set the size of the renderer
-    renderer.setSize(width=800, height=600)
+    # Set initial size
+    renderer.setSize(800, 600)
+    return renderer
 
-    # Create text geometry
-    text_geometry = p3js.TextGeometry(
-        text=name,
-        parameters={
-            'font': p3js.FontLoader().load('https://threejs.org/fonts/helvetiker_regular.typeface.json'),
-            'size': 1,
-            'height': 0.1,
-            'curveSegments': 12,
-        }
-    )
-    
-    # Create a material with the desired color
-    text_material = p3js.MeshBasicMaterial(color=color)
-    
-    # Create a mesh with the geometry and material
-    text_mesh = p3js.Mesh(geometry=text_geometry, material=text_material)
-    
-    # Add the mesh to the scene
-    scene.add(text_mesh)
+def create_scene(renderer):
+    # Create a scene and camera
+    scene = p3js.Scene()
+    camera = p3js.PerspectiveCamera(position=[0, 0, 5], aspect=800/600)
 
-    # Return the renderer and scene
-    return renderer, scene, camera
+    # Example object (a simple cube)
+    geometry = p3js.BoxGeometry()
+    material = p3js.MeshBasicMaterial(color='blue')
+    cube = p3js.Mesh(geometry=geometry, material=material)
+    scene.add(cube)
+
+    # Render the scene
+    renderer.render(scene, camera)
+
+    return scene, camera
 
 # Streamlit UI
-st.title("3D Name Generator")
+st.title("3D Scene with WebGLRenderer")
 
-name = st.text_input("Enter your name:")
-color = st.color_picker("Choose a color:", "#FF5733")
+if st.button("Create 3D Scene"):
+    renderer = create_renderer()
+    scene, camera = create_scene(renderer)
 
-if st.button("Generate 3D Name"):
-    if name:
-        renderer, scene, camera = create_3d_text(name, color)
-        
-        # Render the scene
-        st.write(renderer.to_html())
-    else:
-        st.warning("Please enter a name.")
+    # Render the scene in the Streamlit app
+    st.write(renderer.to_html())
